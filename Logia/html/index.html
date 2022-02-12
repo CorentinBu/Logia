@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>Logia</title>
+</head>
+<body>
+	<div id="updates">Ici</div>
+</body>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript">
+	const socket = io();
+
+    socket.on('afficherMeteo', (data) => {
+		document.getElementById('updates').innerHTML =document.getElementById('updates').innerHTML + "Received: " + data + "</br>";
+    });
+</script>
+
+</html>
