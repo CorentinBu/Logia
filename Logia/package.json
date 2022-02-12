@@ -1,0 +1,25 @@
+{
+  "name": "logia",
+  "version": "1.0.0",
+  "description": "Défi - Soixante Circuits",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CorentinBu/Logia.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CorentinBu/Logia/issues"
+  },
+  "homepage": "https://github.com/CorentinBu/Logia#readme",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "express": "^4.17.2",
+    "socket.io": "^4.4.1",
+    "unirest": "^0.6.0"
+  }
+}
