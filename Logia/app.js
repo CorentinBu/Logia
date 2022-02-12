@@ -12,7 +12,7 @@ const options = {
     "path": "/weather?q=London%2Cuk&lang=fr",
     "headers": {
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-        "x-rapidapi-key": "90ff7ee5c2msh4e0de3b1449b49fp1ee4ccjsnabaada3c348b",
+        "x-rapidapi-key": "--------------------------------",
         "useQueryString": true
     }
 };
