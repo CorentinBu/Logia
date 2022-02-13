@@ -1,67 +1,48 @@
 ﻿<html>
 <head>
     <title>Logia</title>
-
+    <link rel="icon" href="icon.png" />
+    <link rel="stylesheet" href="index.css" />
 </head>
-
-<style>
-
-    @font-face { 
-        font-family: "Proxima"; src: url("Proxima Nova Thin.otf") format("truetype");
-
-    }
-
-    body {
-        background-image: url("bg.png");
-        background-size: 100% auto;
-        font-family: Proxima;
-    }
-
-    #box {
-        background-color: white;
-        outline: 1px black;
-        margin-left: 37%;
-        margin-right: 25%;
-        margin-top : 15%;
-        padding: 2%;
-        width : 20%;
-        font-size: 30px;
-    }
-
-</style>
 
 <body>
 
-    <div id="box">
-        <div id="name">
-
-        </div>
-
-        <div id="meteo">
-
-        </div>
-
-        <div id="desc">
-
-        </div>
-
-        <div id="temp">
-
-        </div>
-
-        <div id="chrono">
-
-        </div>
+    <div id="boxDesc">
+    Bienvenue ! </br> Ici, vous pouvez consulter la météo en temps réel d'une ville quelque part dans le monde ! </br> </br> La ville change toutes les 30 secondes automatiquement.
     </div>
 
-        <div id="updates"></div>
-  
+        <div id="box">
+            <div id="name">
+
+            </div>
+
+            <div id="meteo">
+
+            </div>
+
+            <div id="desc">
+
+            </div>
+
+            <div id="temp">
+
+            </div>
+
+        </div>
+
+        <div id="boxChrono">
+            <div id="chrono">
+
+            </div>
+        </div>
+
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
-	const socket = io();
+
+    const socket = io();
 
     socket.on('afficherMeteo', (data) => {
         var name = data[0];
@@ -69,13 +50,14 @@
         var desc = data[2];
         var temp = data[3];
 
+        //Empty the elements to fill them with the new datas
         document.getElementById('name').innerHTML = ""; 
         document.getElementById('meteo').innerHTML = "";
         document.getElementById('desc').innerHTML = "";
         document.getElementById('temp').innerHTML = "";
 
         document.getElementById('name').innerHTML =
-            document.getElementById('name').innerHTML + name + "</br>" + "</br>";
+            document.getElementById('name').innerHTML + "<b>" + name + "</b></br>" + "</br>";
 
         document.getElementById('meteo').innerHTML =
             document.getElementById('meteo').innerHTML + "Météo : " + meteo + "</br>";
@@ -84,14 +66,15 @@
             document.getElementById('desc').innerHTML + "Description : " + desc + "</br>";
 
         document.getElementById('temp').innerHTML =
-            document.getElementById('temp').innerHTML + "Température en F° : " + temp + "</br>";
+            document.getElementById('temp').innerHTML + "Température : " + temp + "°F" + "</br>";
     });
 
+    //Print the seconds each seconds
     socket.on('chrono', (seconds) => {
         document.getElementById('chrono').innerHTML = ""; 
 
         document.getElementById('chrono').innerHTML =
-            document.getElementById('chrono').innerHTML + "Secondes : " + seconds + "</br>";
+            document.getElementById('chrono').innerHTML + "Chrono : " + seconds + " secondes" + "</br>";
     });
 
 </script>
