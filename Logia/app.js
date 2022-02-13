@@ -42,7 +42,7 @@ var seconds = waitTime / 1000;
         "path": "/weather?",
         "headers": {
             "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-            "x-rapidapi-key": "A COMPLETER !",
+            "x-rapidapi-key": "A COMPLETER",
             "useQueryString": true
         }
     };
@@ -147,7 +147,7 @@ io.on('connection', socket => {
                 console.log("-----------------------------");
 
                 //Converter on C°
-                temp = temp - 32 / 1.8;
+                var cel = temp - 273.15;
 
                 //Send information to client
                 data = [city, meteo, desc, temp];
