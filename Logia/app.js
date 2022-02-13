@@ -26,7 +26,7 @@ const options = {
     "path": "/weather?",
     "headers": {
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-        "x-rapidapi-key": "dcc6b4847cmsha447dd62db10d69p1181c5jsn16eb6a8e6f91",
+        "x-rapidapi-key": "--",
         "useQueryString": true
     }
 };
@@ -52,53 +52,19 @@ function randomIntFromInterval(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-//Do once to not get a empty page at the start
-var req = https.request(options, function (res) {
-    var chunks = [];
+io.on('connection', (socket) => {
+    //Do once to not get a empty page at the start
+    var req = https.request(options, function (res) {
+        var chunks = [];
 
-    res.on("data", function (chunk) {
-        chunks.push(chunk);
-    });
-
-    res.on("end", function () {
-        var body = Buffer.concat(chunks);
-
-        var parsedData = JSON.parse(body);
-        //Uncommented to see all data on the console
-        console.log(parsedData);
-
-        //Collect data on the parsedData
-        city = parsedData.name;
-        meteo = parsedData.weather[0].main;
-        desc = parsedData.weather[0].description;
-        temp = parsedData.main.temp;
-
-        console.log("Ville : " + city);
-        console.log("Météo actuelle : " + meteo);
-        console.log("Description : " + desc);
-        console.log("Température : " + temp);
-        console.log("-----------------------------");
-    });
-});
-req.end();
-
-//Search a new city every 30 secondes
-io.on('connection', socket => {
-    var interval = setInterval(function () {
-
-        villeAleatoire();
-
-        //Get information from the API
-        var req = https.request(options, function (res) {
-            var chunks = [];
-            res.on("data", function (chunk) {
-                chunks.push(chunk);
-            });
+        res.on("data", function (chunk) {
+            chunks.push(chunk);
+        });
 
         res.on("end", function () {
             var body = Buffer.concat(chunks);
-            var parsedData = JSON.parse(body);
 
+            var parsedData = JSON.parse(body);
             //Uncommented to see all data on the console
             console.log(parsedData);
 
@@ -113,22 +79,62 @@ io.on('connection', socket => {
             console.log("Description : " + desc);
             console.log("Température : " + temp);
             console.log("-----------------------------");
+            data = [city, meteo, desc, temp];
+            //console.log("SENT: " + data);
+            socket.emit('afficherMeteo', data);
         });
+    });
+    req.end();
+});
+
+//Search a new city every 30 secondes
+io.on('connection', socket => {
+    var interval = setInterval(function () {
+
+        villeAleatoire();
+
+        //Get information from the API
+        var req = https.request(options, function (res) {
+            var chunks = [];
+
+           res.on("data", function (chunk) {
+                chunks.push(chunk);
+           });
+
+            res.on("end", function () {
+                var body = Buffer.concat(chunks);
+                var parsedData = JSON.parse(body);
+
+                //Uncommented to see all data on the console
+                //console.log(parsedData);
+
+                //Collect data on the parsedData
+                city = parsedData.name;
+                meteo = parsedData.weather[0].main;
+                desc = parsedData.weather[0].description;
+                temp = parsedData.main.temp;
+
+                console.log("Ville : " + city);
+                console.log("Météo actuelle : " + meteo);
+                console.log("Description : " + desc);
+                console.log("Température : " + temp);
+                console.log("-----------------------------");
+            });
 
      
-        data = [city, meteo, desc, temp];
-        //console.log("SENT: " + data);
-        socket.emit('afficherMeteo', data);
+            data = [city, meteo, desc, temp];
+            //console.log("SENT: " + data);
+            socket.emit('afficherMeteo', data);
         });
+
         io.on('close', function close() {
         clearInterval(interval);
         });
+
         req.end();
+
     }, waitTime);
 });
-
-
-
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/html/index.html');
@@ -137,6 +143,5 @@ app.get('/', (req, res) => {
 server.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`)
 })
-
 
 module.exports = app;

@@ -2,8 +2,13 @@
 <head>
 	<title>Logia</title>
 </head>
+
+
+
 <body>
-	<div id="updates"></div>
+    <center>
+        <div id="updates"></div>
+    </center>
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -12,6 +17,7 @@
 	const socket = io();
 
     socket.on('afficherMeteo', (data) => {
+        document.getElementById('updates').innerHTML = "";
 		document.getElementById('updates').innerHTML =document.getElementById('updates').innerHTML + "Received: " + data + "</br>";
     });
 </script>
