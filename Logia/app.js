@@ -14,7 +14,7 @@ var city = '';
 var meteo = '';
 var desc = '';
 var temp = '';
-var waitTime = 3000;
+var waitTime = 300000;
 
 app.use('/', express.static('public'));
 
@@ -26,7 +26,7 @@ const options = {
     "path": "/weather?",
     "headers": {
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-        "x-rapidapi-key": "--",
+        "x-rapidapi-key": "A COMPLETER",
         "useQueryString": true
     }
 };

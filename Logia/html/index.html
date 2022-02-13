@@ -1,14 +1,57 @@
-<html>
+﻿<html>
 <head>
-	<title>Logia</title>
+    <title>Logia</title>
+
 </head>
 
+<style>
 
+    @font-face { 
+        font-family: "Proxima"; src: url("Proxima Nova Thin.otf") format("truetype");
+
+    }
+
+    body {
+        background-image: url("bg.png");
+        background-size: 100% auto;
+        font-family: Proxima;
+    }
+
+    #box {
+        background-color: white;
+        outline: 1px black;
+        margin-left: 37%;
+        margin-right: 25%;
+        margin-top : 15%;
+        padding: 2%;
+        width : 20%;
+        font-size: 30px;
+    }
+
+</style>
 
 <body>
-    <center>
+
+        <div id="box">
+            <div id="name">
+
+            </div>
+
+            <div id="meteo">
+
+            </div>
+
+            <div id="desc">
+
+            </div>
+
+            <div id="temp">
+
+            </div>
+        </div>
+
         <div id="updates"></div>
-    </center>
+  
 </body>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -17,8 +60,27 @@
 	const socket = io();
 
     socket.on('afficherMeteo', (data) => {
-        document.getElementById('updates').innerHTML = "";
-		document.getElementById('updates').innerHTML =document.getElementById('updates').innerHTML + "Received: " + data + "</br>";
+        var name = data[0];
+        var meteo = data[1];
+        var desc = data[2];
+        var temp = data[3];
+
+        document.getElementById('name').innerHTML = ""; 
+        document.getElementById('meteo').innerHTML = "";
+        document.getElementById('desc').innerHTML = "";
+        document.getElementById('temp').innerHTML = "";
+
+        document.getElementById('name').innerHTML =
+            document.getElementById('name').innerHTML + name + "</br>" + "</br>";
+
+        document.getElementById('meteo').innerHTML =
+            document.getElementById('meteo').innerHTML + "Météo : " + meteo + "</br>";
+
+        document.getElementById('desc').innerHTML =
+            document.getElementById('desc').innerHTML + "Description : " + desc + "</br>";
+
+        document.getElementById('temp').innerHTML =
+            document.getElementById('temp').innerHTML + "Température en F° : " + temp + "</br>";
     });
 </script>
 
