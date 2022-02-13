@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
 
                 var parsedData = JSON.parse(body);
                 //Uncommented to see all data on the console
-                //console.log(parsedData);
+                console.log(parsedData);
 
                 //Collect data on the parsedData
                 city = parsedData.name;
@@ -96,14 +96,17 @@ io.on('connection', (socket) => {
                 desc = parsedData.weather[0].description;
                 temp = parsedData.main.temp;
 
+                //Converter on C°
+                var cel = temp - 273.15;
+
                 console.log("Ville : " + city);
                 console.log("Météo actuelle : " + meteo);
                 console.log("Description : " + desc);
-                console.log("Température : " + temp);
+                console.log("Température : " + cel);
                 console.log("-----------------------------");
 
                 //Send information to client
-                data = [city, meteo, desc, temp];
+                data = [city, meteo, desc, cel];
                 socket.emit('afficherMeteo', data);
             });
         });
@@ -129,7 +132,7 @@ io.on('connection', socket => {
                 var parsedData = JSON.parse(body);
 
                 //Uncommented to see all data on the console
-                //console.log(parsedData);
+                console.log(parsedData);
 
                 //Collect data on the parsedData
                 city = parsedData.name;
@@ -142,6 +145,9 @@ io.on('connection', socket => {
                 console.log("Description : " + desc);
                 console.log("Température : " + temp);
                 console.log("-----------------------------");
+
+                //Converter on C°
+                temp = temp - 32 / 1.8;
 
                 //Send information to client
                 data = [city, meteo, desc, temp];
