@@ -9,12 +9,13 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 var data = "Real-Time Update 1";
-var i = 1;
+
 var city = '';
 var meteo = '';
 var desc = '';
 var temp = '';
-var waitTime = 300000;
+var waitTime = 10000;
+var seconds = waitTime / 1000;
 
 app.use('/', express.static('public'));
 
@@ -53,6 +54,7 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 io.on('connection', (socket) => {
+    socket.emit('chrono', seconds);
     //Do once to not get a empty page at the start
     var req = https.request(options, function (res) {
         var chunks = [];
@@ -79,8 +81,9 @@ io.on('connection', (socket) => {
             console.log("Description : " + desc);
             console.log("Température : " + temp);
             console.log("-----------------------------");
+
+            //Send information to client
             data = [city, meteo, desc, temp];
-            //console.log("SENT: " + data);
             socket.emit('afficherMeteo', data);
         });
     });
@@ -119,12 +122,14 @@ io.on('connection', socket => {
                 console.log("Description : " + desc);
                 console.log("Température : " + temp);
                 console.log("-----------------------------");
+
+                //Send information to client
+                data = [city, meteo, desc, temp];
+                seconds = waitTime / 1000;
+                socket.emit('afficherMeteo', data);
             });
 
-     
-            data = [city, meteo, desc, temp];
-            //console.log("SENT: " + data);
-            socket.emit('afficherMeteo', data);
+
         });
 
         io.on('close', function close() {
@@ -134,6 +139,14 @@ io.on('connection', socket => {
         req.end();
 
     }, waitTime);
+});
+
+io.on('connection', socket => {
+    var interval = setInterval(function () {
+        seconds--;
+        console.log("Une seconde est passée..." + seconds);
+        socket.emit('chrono', seconds);
+    }, 1000);
 });
 
 app.get('/', (req, res) => {
