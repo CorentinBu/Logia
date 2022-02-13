@@ -14,7 +14,7 @@ var city = '';
 var meteo = '';
 var desc = '';
 var temp = '';
-var waitTime=3000;
+var waitTime = 3000;
 
 app.use('/', express.static('public'));
 
@@ -38,8 +38,8 @@ function villeAleatoire() {
 
     //Init the link, then choose the city randomly
     options.path = "/weather?";
-    var cityList = ["Paris", "London", "Tokyo", "New+York+City", "Moscow","Nantes","Florence","Belgrade","Sofia","Madrid","Tunis","Hamburg","Berlin","Cologne","Amsterdam","Los+Angeles","Inuvik","Barrow","Mould+Bay","Anadyr","Seoul","Sendai","Singapore"];
-    var size = cityList.length;
+    var cityList = ["Paris", "London", "Tokyo", "New+York+City", "Moscow", "Nantes", "Florence", "Belgrade", "Madrid", "Berlin", "Cologne", "Amsterdam", "Los+Angeles", "Inuvik", "Barrow", "Mould+Bay", "Anadyr", "Seoul", "Sendai", "Singapore"];
+    var size = cityList.length - 1;
     var random = randomIntFromInterval(0, size);
 
     //Create URL with the city
@@ -83,22 +83,22 @@ var req = https.request(options, function (res) {
 req.end();
 
 //Search a new city every 30 secondes
-var interval = setInterval(function () {
-   
-    villeAleatoire();
+io.on('connection', socket => {
+    var interval = setInterval(function () {
 
-    //Get information from the API
-    var req = https.request(options, function (res) {
-        var chunks = [];
+        villeAleatoire();
 
-        res.on("data", function (chunk) {
-            chunks.push(chunk);
-        });
+        //Get information from the API
+        var req = https.request(options, function (res) {
+            var chunks = [];
+            res.on("data", function (chunk) {
+                chunks.push(chunk);
+            });
 
         res.on("end", function () {
             var body = Buffer.concat(chunks);
-
             var parsedData = JSON.parse(body);
+
             //Uncommented to see all data on the console
             console.log(parsedData);
 
@@ -114,17 +114,21 @@ var interval = setInterval(function () {
             console.log("Température : " + temp);
             console.log("-----------------------------");
         });
-    });
 
-    req.end();
+     
+        data = [city, meteo, desc, temp];
+        //console.log("SENT: " + data);
+        socket.emit('afficherMeteo', data);
+        });
+        io.on('close', function close() {
+        clearInterval(interval);
+        });
+        req.end();
+    }, waitTime);
+});
 
-    io.on('connection', socket => {
-            data= [city, meteo, desc, temp];
-            //console.log("SENT: " + data);
-            socket.emit('afficherMeteo', data);
-        })
 
-}, waitTime);
+
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/html/index.html');
