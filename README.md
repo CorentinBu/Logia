@@ -3,14 +3,22 @@ Défi Soixante Circuits : Programme permettant d'afficher la météo d'une ville
 
 Comment utiliser Logia ?
 
+En résumé :
+  -Télécharger le programme
+  -Ouvrir un terminal et aller dans le dossier "Logia", puis taper la commande "**npm install express socket.io nodemon**"
+  -Placer votre clé API à la ligne 45 du fichier app.js
+  -Démarrer le server avec "**nodemon server**"
+  -Aller sur "http://localhost:3000"
+
+En détails :
   - Récupérez tous les fichiers sur le Git.
   - Ouvrir un terminal, puis aller dans le dossier Logia contenant les dossiers : html et public
-  - Maintenant, il va falloir installer les modules permettant au programme de fonctionner. Ici on va avoir besoin de Express, Socket.io et Nodemon, vous pouvez les installer avec cette commande : npm install express socket.io nodemon
+  - Maintenant, il va falloir installer les modules permettant au programme de fonctionner. Ici on va avoir besoin de Express, Socket.io et Nodemon, vous pouvez les installer avec cette commande : "**npm install express socket.io nodemon**"
   - A présent, pour pouvoir utiliser l'API, il va falloir s'inscrire sur ce site : https://rapidapi.com/community/api/open-weather-map/
   - Une fois cela fait, il faut s'inscrire sur l'API "Open Weather Map", c'est ce qui permet de récupérer les informations sur la météo.
   - Vous pouvez récupérer la clé API dans la fenêtre de droite après avoir lancé un Endpoint. Elle se trouve dans le code snippets, à la ligne "x-rapidapi-key"
   - Il ne reste plus qu'à placer la clé API dans le programme, à la ligne 45.
-  - Retournez dans le terminal de commande et rentrez "nodemon server".
+  - Retournez dans le terminal de commande et rentrez "**nodemon server**".
   - Aller sur http://localhost:3000 et vous pourrez voir le programme se lancer automatiquement.
 
 Problème connu : 
