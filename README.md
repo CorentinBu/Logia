@@ -4,11 +4,11 @@ Défi Soixante Circuits : Programme permettant d'afficher la météo d'une ville
 Comment utiliser Logia ?
 
 En résumé :
-  -Télécharger le programme
-  -Ouvrir un terminal et aller dans le dossier "Logia", puis taper la commande "**npm install express socket.io nodemon**"
-  -Placer votre clé API à la ligne 45 du fichier app.js
-  -Démarrer le server avec "**nodemon server**"
-  -Aller sur "http://localhost:3000"
+  - Télécharger le programme
+  - Ouvrir un terminal et aller dans le dossier "Logia", puis taper la commande "**npm install express socket.io nodemon**"
+  - Placer votre clé API à la ligne 45 du fichier app.js
+  - Démarrer le server avec "**nodemon server**"
+  - Aller sur "http://localhost:3000"
 
 En détails :
   - Récupérez tous les fichiers sur le Git.
