@@ -97,7 +97,8 @@ io.on('connection', (socket) => {
                 temp = parsedData.main.temp;
 
                 //Converter on C°
-                var cel = temp - 273.15;
+                let cel = temp - 273.15;
+                cel=(Math.round(cel * 100) / 100).toFixed(2);
 
                 console.log("Ville : " + city);
                 console.log("Météo actuelle : " + meteo);
@@ -140,17 +141,18 @@ io.on('connection', socket => {
                 desc = parsedData.weather[0].description;
                 temp = parsedData.main.temp;
 
+                //Converter on C°
+                let cel = temp - 273.15;
+                cel = (Math.round(cel * 100) / 100).toFixed(2);
+
                 console.log("Ville : " + city);
                 console.log("Météo actuelle : " + meteo);
                 console.log("Description : " + desc);
-                console.log("Température : " + temp);
+                console.log("Température : " + cel);
                 console.log("-----------------------------");
 
-                //Converter on C°
-                var cel = temp - 273.15;
-
                 //Send information to client
-                data = [city, meteo, desc, temp];
+                data = [city, meteo, desc, cel];
                 seconds = waitTime / 1000;
                 socket.emit('afficherMeteo', data);
             });
