@@ -26,7 +26,7 @@ const options = {
     "path": "/weather?",
     "headers": {
         "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-        "x-rapidapi-key": "---",
+        "x-rapidapi-key": "dcc6b4847cmsha447dd62db10d69p1181c5jsn16eb6a8e6f91",
         "useQueryString": true
     }
 };
