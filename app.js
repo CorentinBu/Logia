@@ -25,15 +25,6 @@ var seconds = waitTime / 1000;
         console.log(`Listening at http://localhost:${port}`)
     })
 
-    io.on('connection', (socket) => {
-        console.log('a user connected');
-        socket.on('disconnect', () => {
-            console.log('user disconnected');
-            socket.disconnect();
-            socket.removeAllListeners();
-        });
-    });
-
 //API's options
     const options = {
         "method": "GET",
@@ -42,23 +33,23 @@ var seconds = waitTime / 1000;
         "path": "/weather?",
         "headers": {
             "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-            "x-rapidapi-key": "A COMPLETER",
+            "x-rapidapi-key": "8750f65048msh2dee7061fd3f43bp1ba70cjsn92f8126180bb",
             "useQueryString": true
         }
     };
 
 //Choose a random city of the list
-    function villeAleatoire() {
+function villeAleatoire() {
 
-        //Init the link, then choose the city randomly
-        options.path = "/weather?";
-        var cityList = ["Paris", "London", "Tokyo", "New+York+City", "Moscow", "Nantes", "Florence", "Belgrade", "Madrid", "Berlin", "Cologne", "Amsterdam", "Los+Angeles", "Inuvik", "Barrow", "Mould+Bay", "Anadyr", "Seoul", "Sendai", "Singapore"];
-        var size = cityList.length - 1;
-        var random = randomIntFromInterval(0, size);
+//Init the link, then choose the city randomly
+options.path = "/weather?";
+var cityList = ["Paris", "London", "Tokyo", "New+York+City", "Moscow", "Nantes", "Florence", "Belgrade", "Madrid", "Berlin", "Cologne", "Amsterdam", "Los+Angeles", "Inuvik", "Barrow", "Mould+Bay", "Anadyr", "Seoul", "Sendai", "Singapore"];
+var size = cityList.length - 1;
+var random = randomIntFromInterval(0, size);
 
-        //Create URL with the city
-        var URLcity = cityList[random];
-        options.path = options.path + "q=" + URLcity + "&lang=fr";
+//Create URL with the city
+var URLcity = cityList[random];
+options.path = options.path + "q=" + URLcity + "&lang=fr";
         console.log(options.path);
     }
 
@@ -67,11 +58,10 @@ var seconds = waitTime / 1000;
     }
 
 //Do once to not get a empty page at the start
-
-//Start with a random city
 villeAleatoire(); 
 
 io.on('connection', (socket) => {
+
     //Send the seconds to the client
     seconds = waitTime / 1000;
     socket.emit('chrono', seconds);
@@ -112,10 +102,9 @@ io.on('connection', (socket) => {
             });
         });
         req.end();
-});
+
 
 //Search a new city every 30 secondes
-io.on('connection', socket => {
     var interval = setInterval(function () {
 
         villeAleatoire();
@@ -165,10 +154,9 @@ io.on('connection', socket => {
         req.end();
 
     }, waitTime);
-});
 
-//Chronometre
-io.once('connection', socket => {
+
+    //Chronometre
     var interval = setInterval(function () {
 
         //Decrement time
@@ -189,6 +177,10 @@ io.once('connection', socket => {
 
         io.on('close', function close() {
             clearInterval(interval);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('user disconnected');
         });
 
     }, 1000);
