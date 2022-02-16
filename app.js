@@ -1,4 +1,6 @@
-﻿//Défi - Soixante Circuits - Corentin Burguiere le 13 février 2022
+﻿//Défi - Soixante Circuits - Corentin Burguiere le 16 février 2022
+
+require('dotenv').config();
 
 const express = require('express');
 const app = express();
@@ -6,24 +8,23 @@ const http = require("http");
 const https = require("https");
 
 const { Server } = require("socket.io");
-const port = 3000
+const port = process.env.PORT;
 const server = http.createServer(app);
 const io = new Server(server);
 
 //Waiting time before change city (in milliseconds)
-var waitTime = 30000;
+var waitTime = process.env.WAIT_TIME;
 var seconds = waitTime / 1000;
 
-//Connection and deconnection
-    app.use('/', express.static('public'));
+app.use('/', express.static('public'));
 
-    app.get('/', (req, res) => {
-        res.sendFile(__dirname + '/index.html');
-    });
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
-    server.listen(port, () => {
-        console.log(`Listening at http://localhost:${port}`)
-    })
+server.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}`)
+})
 
 //API's options
     const options = {
@@ -33,29 +34,28 @@ var seconds = waitTime / 1000;
         "path": "/weather?",
         "headers": {
             "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-            "x-rapidapi-key": "8750f65048msh2dee7061fd3f43bp1ba70cjsn92f8126180bb",
+            "x-rapidapi-key": process.env.API_KEY,
             "useQueryString": true
         }
     };
 
 //Choose a random city of the list
 function villeAleatoire() {
+    //Init the link, then choose the city randomly
+    options.path = "/weather?";
+    var cityList = ["Paris", "London", "Tokyo", "New+York+City", "Moscow", "Nantes", "Florence", "Belgrade", "Madrid", "Berlin", "Cologne", "Amsterdam", "Los+Angeles", "Inuvik", "Barrow", "Mould+Bay", "Anadyr", "Seoul", "Sendai", "Singapore"];
+    var size = cityList.length - 1;
+    var random = randomIntFromInterval(0, size);
 
-//Init the link, then choose the city randomly
-options.path = "/weather?";
-var cityList = ["Paris", "London", "Tokyo", "New+York+City", "Moscow", "Nantes", "Florence", "Belgrade", "Madrid", "Berlin", "Cologne", "Amsterdam", "Los+Angeles", "Inuvik", "Barrow", "Mould+Bay", "Anadyr", "Seoul", "Sendai", "Singapore"];
-var size = cityList.length - 1;
-var random = randomIntFromInterval(0, size);
-
-//Create URL with the city
-var URLcity = cityList[random];
-options.path = options.path + "q=" + URLcity + "&lang=fr";
+    //Create URL with the city
+    var URLcity = cityList[random];
+    options.path = options.path + "q=" + URLcity + "&lang=fr";
         console.log(options.path);
     }
 
-    function randomIntFromInterval(min, max) { // min and max included 
-        return Math.floor(Math.random() * (max - min + 1) + min)
-    }
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
 //Do once to not get a empty page at the start
 villeAleatoire(); 
