@@ -18,7 +18,7 @@ var seconds = waitTime / 1000;
     app.use('/', express.static('public'));
 
     app.get('/', (req, res) => {
-        res.sendFile(__dirname + '/html/index.html');
+        res.sendFile(__dirname + '/index.html');
     });
 
     server.listen(port, () => {
