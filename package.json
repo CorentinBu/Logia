@@ -10,6 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/CorentinBu/Logia.git"
   },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -19,9 +23,11 @@
   "dependencies": {
     "axios": "^0.25.0",
     "express": "^4.17.2",
-    "nodemon": "^2.0.15",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "unirest": "^0.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
